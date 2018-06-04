@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportStream.Web", "SportStream.Web\SportStream.Web.csproj", "{F50651D1-CD2F-4440-AB86-A6CC140E82ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportStream.Web", "SportStream.Web\SportStream.Web.csproj", "{F50651D1-CD2F-4440-AB86-A6CC140E82ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportStream.Test", "SportStream.Test\SportStream.Test.csproj", "{2A1702D1-D2F8-451D-9ABF-47FDE341E095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F50651D1-CD2F-4440-AB86-A6CC140E82ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F50651D1-CD2F-4440-AB86-A6CC140E82ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F50651D1-CD2F-4440-AB86-A6CC140E82ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A1702D1-D2F8-451D-9ABF-47FDE341E095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A1702D1-D2F8-451D-9ABF-47FDE341E095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A1702D1-D2F8-451D-9ABF-47FDE341E095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A1702D1-D2F8-451D-9ABF-47FDE341E095}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

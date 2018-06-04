@@ -19,18 +19,20 @@ namespace SportStream.Web.Controllers
 		{
 			try
 			{
+				var resourceReader = new ResourceReader("https://abcnews.go.com/abcnews/topstories");
 				FeedParser parser = new FeedParser();
-				var items = await parser.Parse("http://cdn.livetvcdn.net/rss/upcoming_it.xml", FeedType.RSS);
-
+				//var items = await parser.Parse("http://cdn.livetvcdn.net/rss/upcoming_it.xml", FeedType.RSS);
+				var items = await parser.Parse(resourceReader, FeedType.RSS);
+								
 				var filteredItems = items
 					.Where(item => item.Title.ToLower().Contains(q.ToLower()));
 
 				var result = new List<string>();
 			
-				filteredItems.ToList().ForEach(async item =>
+				filteredItems.ToList().ForEach(item =>
 				{
-					var page = await FollowLinkContent(item.Link);
-					result.Add(page.Substring(1,10));
+					var page = FollowLinkContent(item.Link);
+					result.Add(page.Result.Substring(1,10));
 				});
 				return result;
 			}

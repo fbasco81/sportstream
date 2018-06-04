@@ -15,20 +15,21 @@ namespace SportStream.Web.FeedCore
 	/// </summary>
 	public class FeedParser
 	{
+	
 		/// <summary>
 		/// Parses the given <see cref="FeedType"/> and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
 		/// </summary>
 		/// <returns></returns>
-		public async Task< IList<Item>> Parse(string url, FeedType feedType)
+		public async Task< IList<Item>> Parse(IResourceReader resourceReader, FeedType feedType)
 		{
 			switch (feedType)
 			{
 				case FeedType.RSS:
-					return await ParseRss(url);
+					return await ParseRss(resourceReader);
 				case FeedType.RDF:
-					return await ParseRdf(url);
+					return await ParseRdf(resourceReader);
 				case FeedType.Atom:
-					return await ParseAtom(url);
+					return await ParseAtom(resourceReader);
 				default:
 					throw new NotSupportedException(string.Format("{0} is not supported", feedType.ToString()));
 			}
@@ -37,11 +38,11 @@ namespace SportStream.Web.FeedCore
 		/// <summary>
 		/// Parses an Atom feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
 		/// </summary>
-		public virtual async Task<IList<Item>> ParseAtom(string url)
+		public virtual async Task<IList<Item>> ParseAtom(IResourceReader resourceReader)
 		{
 			try
 			{
-				var doc = await ReadResourceFromUrl(url);
+				var doc = await resourceReader.GetAsync();
 				// Feed/Entry
 				var entries = from item in doc.Root.Elements().Where(i => i.Name.LocalName == "entry")
 											select new Item
@@ -63,12 +64,12 @@ namespace SportStream.Web.FeedCore
 		/// <summary>
 		/// Parses an RSS feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
 		/// </summary>
-		public virtual async Task<IList<Item>> ParseRss(string url)
+		public virtual async Task<IList<Item>> ParseRss(IResourceReader resourceReader)
 		{
 			
 			try
 			{
-				var doc = await ReadResourceFromUrl(url);
+				var doc = await resourceReader.GetAsync();
 				// RSS/Channel/item
 				var entries = from item in doc.Root.Descendants().First(i => i.Name.LocalName == "channel").Elements().Where(i => i.Name.LocalName == "item")
 											select new Item
@@ -96,30 +97,14 @@ namespace SportStream.Web.FeedCore
 
 		}
 
-		private async Task<XDocument> ReadResourceFromUrl(string url)
-		{
-			using (var client = new HttpClient())
-			{
-				var response = await client.GetAsync(url);
-				response.EnsureSuccessStatusCode();
-				string responseBody = await response.Content.ReadAsStringAsync();
-
-
-				responseBody = responseBody.Replace("&ugrave", "u").Replace("ugrave", "");
-
-				return XDocument.Parse(responseBody);
-
-			}
-		}
-
 		/// <summary>
 		/// Parses an RDF feed and returns a <see cref="IList&amp;lt;Item&amp;gt;"/>.
 		/// </summary>
-		public virtual async Task<IList<Item>> ParseRdf(string url)
+		public virtual async Task<IList<Item>> ParseRdf(IResourceReader resourceReader)
 		{
 			try
 			{
-				var doc = await ReadResourceFromUrl(url);
+				var doc = await resourceReader.GetAsync();
 				// <item> is under the root
 				var entries = from item in doc.Root.Descendants().Where(i => i.Name.LocalName == "item")
 											select new Item
